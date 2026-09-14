@@ -1,0 +1,16 @@
+import crypto from 'crypto'
+import fetch from 'node-fetch'
+
+export default async (req,res)=>{
+  res.setHeader('Access-Control-Allow-Origin','*')
+  const K = {apiKey: process.env.API_KEY, apiSecret: process.env.API_SECRET}
+  const sig = t => crypto.createHmac('sha256',K.apiSecret).update(t).digest('hex')
+  const url = req.query.url
+  const ts = Date.now()+''
+  const recv = '5000'
+  let signStr = ts + K.apiKey + recv
+  if(req.method==='POST') signStr += JSON.stringify(req.body)
+  else if(url.includes('wallet-balance')) signStr += 'accountType=UNIFIED'
+  const r = await fetch(url,{method: req.method,headers:{'X-BAPI-API-KEY':K.apiKey,'X-BAPI-TIMESTAMP':ts,'X-BAPI-RECV-WINDOW':recv,'X-BAPI-SIGN':sig(signStr),'Content-Type':'application/json'},body: req.method==='POST'?JSON.stringify(req.body):undefined})
+  res.json(await r.json())
+}
