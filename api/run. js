@@ -1,9 +1,8 @@
 export default async function handler(req, res) {
-  const NTFY_TOPIC = "mnt-bamako-johnson-2025";
-  const priceRes = await fetch("https://api.bybit.com/v5/market/tickers?category=spot&symbol=BTCUSDT");
-  const priceData = await priceRes.json();
-  const price = parseFloat(priceData.result.list[0].lastPrice);
-  let message = `BOT-7PROT Tick: BTC = $${price}`;
-  await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, { method: "POST", body: message });
-  res.status(200).json({status: "tick_done", price: price});
+  // Test that the function actually runs
+  res.status(200).json({
+    status: "bot_is_alive",
+    message: "Vercel is working! Now connecting to Bybit...",
+    time: new Date().toISOString()
+  });
 }
