@@ -1,8 +1,0 @@
-export default async function handler(req, res) {
-  // Test that the function actually runs
-  res.status(200).json({
-    status: "bot_is_alive",
-    message: "Vercel is working! Now connecting to Bybit...",
-    time: new Date().toISOString()
-  });
-}
